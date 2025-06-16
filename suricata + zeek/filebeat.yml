@@ -1,0 +1,18 @@
+filebeat.inputs:
+  - type: log
+    paths:
+      - /var/log/suricata/eve.json          # Suricata (JSON EVE)
+      - /var/log/zeek/*.log                 # Zeek TSV
+    processors:
+      - decode_json_fields:
+          fields: ["message"]
+          target: ""
+          add_error_key: false
+
+output.elasticsearch:
+  hosts: ["${INDEXER_HOST}"]
+  username: "${INDEXER_USER}"
+  password: "${INDEXER_PASS}"
+  ssl.verification_mode: none
+  # Pas d’ILM : Wazuh gère ses templates
+  setup.ilm.enabled: false

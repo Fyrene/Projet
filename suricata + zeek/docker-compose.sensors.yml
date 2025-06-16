@@ -1,0 +1,53 @@
+# docker-compose.sensors.yml
+# Sensors + log-shipper, prêts pour injection dans votre stack Wazuh
+# Images : zeek/zeek (officielle) :contentReference[oaicite:0]{index=0}  |  jasonish/suricata (maintenue) :contentReference[oaicite:1]{index=1}
+
+version: "3.9"
+
+volumes:
+  zeek-logs:          # ⇨ monté en RO dans Filebeat / Wazuh-agent
+  suricata-logs:
+
+networks:
+  wazuh:              # réutilise le réseau où tourne déjà votre manager/indexer
+    external: true
+
+services:
+  zeek:
+    image: zeek/zeek:latest
+    container_name: zeek
+    network_mode: host          # accès direct à l’interface sniffée
+    volumes:
+      - zeek-logs:/var/log/zeek
+    command: >
+      zeek -i ${IFACE:-eth0}
+    restart: unless-stopped
+
+  suricata:
+    image: jasonish/suricata:7.0
+    container_name: suricata
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_NICE
+    volumes:
+      - suricata-logs:/var/log/suricata
+    command: >
+      -i ${IFACE:-eth0} --af-packet=workers=4,cluster-id=99
+    restart: unless-stopped
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.25   # L-ts que Wazuh 5.x utilise :contentReference[oaicite:2]{index=2}
+    container_name: filebeat-sensors
+    user: root
+    network_mode: host
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro  # modèle ci-dessous
+      - zeek-logs:/var/log/zeek:ro
+      - suricata-logs:/var/log/suricata:ro
+    environment:
+      - INDEXER_HOST=${WAZUH_INDEXER:-https://wazuh.indexer:9200}
+      - INDEXER_USER=${INDEXER_USER:-admin}
+      - INDEXER_PASS=${INDEXER_PASS:-SecretPassword}
+    restart: unless-stopped
