@@ -2,6 +2,7 @@ services:
   # This is capable to relay via gmail, Amazon SES, or generic relays
   # See: https://hub.docker.com/r/ixdotai/smtp
   mail:
+    env_file: .env
     image: ixdotai/smtp
     environment:
       - "SMARTHOST_ADDRESS=${SMARTHOST_ADDRESS}"
@@ -11,6 +12,7 @@ services:
       - "SMARTHOST_ALIASES=${SMARTHOST_ALIASES}"
 
   redis:
+    env_file: .env
     image: valkey/valkey:7.2
     command: "--requirepass '${REDIS_PASSWORD:-redispassword}'"
     healthcheck:
@@ -22,6 +24,7 @@ services:
       start_interval: 5s
 
   db:
+    env_file: .env
     # We use MariaDB because it supports ARM and has the expected collations
     image: mariadb:10.11
     restart: always
@@ -52,6 +55,7 @@ services:
       start_interval: 5s
 
   misp-core:
+    env_file: .env
     image: ghcr.io/misp/misp-docker/misp-core:${CORE_RUNNING_TAG:-latest}
     cap_add:
       - AUDIT_WRITE
@@ -253,6 +257,7 @@ services:
       - "CONTENT_SECURITY_POLICY=${CONTENT_SECURITY_POLICY}"
 
   misp-modules:
+    env_file: .env
     image: ghcr.io/misp/misp-docker/misp-modules:${MODULES_RUNNING_TAG:-latest}
     build:
       context: modules/.
