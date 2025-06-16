@@ -1,0 +1,11 @@
+# Ignore environment files copied from examples
+**/.env
+*.env
+*/.env
+
+# Ignore editor and Python artifacts
+__pycache__/
+*.pyc
+
+# Misc
+.DS_Store
