@@ -9,10 +9,11 @@ This repository contains Docker compose environments for multiple services. Each
 - suricata-zeek
 - wazuh-docker-main
 
-You can now orchestrate everything from the repository root. After copying every `.env.example` to `.env` within each service directory, run:
+You can now orchestrate everything from the repository root. The provided Makefile automates the setup:
 
 ```bash
-docker compose up -d
+make init   # copy every .env.example to .env
+make up     # start all containers
 ```
 
-This uses the root `docker-compose.yml` which extends the individual service files. You may also run `docker compose config` to verify the merged configuration.
+Use `make down` to stop the stack. The root `docker-compose.yml` extends the individual service files, and you can run `docker compose config` to verify the merged configuration.
