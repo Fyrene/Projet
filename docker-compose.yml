@@ -1,0 +1,125 @@
+version: "3.9"
+
+services:
+  iris-rabbitmq:
+    extends:
+      file: Iris/docker-compose.yml
+      service: rabbitmq
+  iris-db:
+    extends:
+      file: Iris/docker-compose.yml
+      service: db
+  iris-app:
+    extends:
+      file: Iris/docker-compose.yml
+      service: app
+  iris-worker:
+    extends:
+      file: Iris/docker-compose.yml
+      service: worker
+  iris-nginx:
+    extends:
+      file: Iris/docker-compose.yml
+      service: nginx
+
+  shuffle-frontend:
+    extends:
+      file: Shuffle/docker-compose.yml
+      service: frontend
+  shuffle-backend:
+    extends:
+      file: Shuffle/docker-compose.yml
+      service: backend
+  shuffle-orborus:
+    extends:
+      file: Shuffle/docker-compose.yml
+      service: orborus
+  shuffle-opensearch:
+    extends:
+      file: Shuffle/docker-compose.yml
+      service: opensearch
+
+  misp-mail:
+    extends:
+      file: misp/docker-compose.yml
+      service: mail
+  misp-redis:
+    extends:
+      file: misp/docker-compose.yml
+      service: redis
+  misp-db:
+    extends:
+      file: misp/docker-compose.yml
+      service: db
+  misp-core:
+    extends:
+      file: misp/docker-compose.yml
+      service: misp-core
+  misp-modules:
+    extends:
+      file: misp/docker-compose.yml
+      service: misp-modules
+
+  suricata-zeek-zeek:
+    extends:
+      file: suricata-zeek/docker-compose.yml
+      service: zeek
+  suricata-zeek-suricata:
+    extends:
+      file: suricata-zeek/docker-compose.yml
+      service: suricata
+  suricata-zeek-filebeat:
+    extends:
+      file: suricata-zeek/docker-compose.yml
+      service: filebeat
+
+  wazuh-manager:
+    extends:
+      file: wazuh-docker-main/docker-compose.yml
+      service: wazuh.manager
+  wazuh-indexer:
+    extends:
+      file: wazuh-docker-main/docker-compose.yml
+      service: wazuh.indexer
+  wazuh-dashboard:
+    extends:
+      file: wazuh-docker-main/docker-compose.yml
+      service: wazuh.dashboard
+
+volumes:
+  iris-downloads:
+  user_templates:
+  server_data:
+  db_data:
+
+  shuffle-database:
+
+  mysql_data:
+
+  zeek-logs:
+  suricata-logs:
+
+  wazuh_api_configuration:
+  wazuh_etc:
+  wazuh_logs:
+  wazuh_queue:
+  wazuh_var_multigroups:
+  wazuh_integrations:
+  wazuh_active_response:
+  wazuh_agentless:
+  wazuh_wodles:
+  filebeat_etc:
+  filebeat_var:
+  wazuh-indexer-data:
+  wazuh-dashboard-config:
+  wazuh-dashboard-custom:
+
+networks:
+  iris_backend:
+    name: iris_backend
+  iris_frontend:
+    name: iris_frontend
+  shuffle:
+    name: shuffle
+  wazuh:
+    external: true
