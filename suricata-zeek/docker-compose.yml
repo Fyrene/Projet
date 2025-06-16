@@ -1,15 +1,15 @@
 # docker-compose.sensors.yml
-# Sensors + log-shipper, prêts pour injection dans votre stack Wazuh
-# Images : zeek/zeek (officielle) :contentReference[oaicite:0]{index=0}  |  jasonish/suricata (maintenue) :contentReference[oaicite:1]{index=1}
+# Sensors + log shipper, ready for injection into your Wazuh stack
+# Images: zeek/zeek (official) | jasonish/suricata (maintained)
 
 version: "3.9"
 
 volumes:
-  zeek-logs:          # ⇨ monté en RO dans Filebeat / Wazuh-agent
+  zeek-logs:          # mounted read-only in Filebeat/Wazuh agent
   suricata-logs:
 
 networks:
-  wazuh:              # réutilise le réseau où tourne déjà votre manager/indexer
+  wazuh:              # reuses the network where your manager/indexer is already running
     external: true
 
 services:
@@ -17,7 +17,7 @@ services:
     env_file: .env
     image: zeek/zeek:latest
     container_name: zeek
-    network_mode: host          # accès direct à l’interface sniffée
+    network_mode: host          # direct access to the sniffed interface
     volumes:
       - zeek-logs:/var/log/zeek
     command: >
@@ -41,12 +41,12 @@ services:
 
   filebeat:
     env_file: .env
-    image: docker.elastic.co/beats/filebeat:7.17.25   # L-ts que Wazuh 5.x utilise :contentReference[oaicite:2]{index=2}
+    image: docker.elastic.co/beats/filebeat:7.17.25   # LTS version that Wazuh 5.x uses
     container_name: filebeat-sensors
     user: root
     network_mode: host
     volumes:
-      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro  # modèle ci-dessous
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro  # template below
       - zeek-logs:/var/log/zeek:ro
       - suricata-logs:/var/log/suricata:ro
     environment:
