@@ -5,7 +5,7 @@ This repository gathers several Docker Compose configurations that together form
 ## Prerequisites
 
 - Docker and the Docker Compose v2 plugin installed
-- Clone this repository and copy each `.env.example` to `.env`:
+- Clone this repository and run the initialization step which copies each `.env.example` to `.env` and generates the Wazuh certificates:
 
 ```bash
 make init
@@ -16,7 +16,7 @@ make init
 The provided `Makefile` lets you start or stop every container at once:
 
 ```bash
-make up       # start all containers and generate Wazuh certificates
+make up       # start all containers
 make down     # stop and remove containers
 ```
 

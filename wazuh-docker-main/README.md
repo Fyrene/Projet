@@ -10,7 +10,7 @@ It can be deployed by following these steps:
 ```bash
 sysctl -w vm.max_map_count=262144
 ```
-2) Generate the certificates using the provided image. Add the `HTTP_PROXY` variable to `generate-indexer-certs.yml` if your environment requires a proxy and run:
+2) Generate the certificates using the provided image. This step is automatically executed when running `make init` from the repository root. If your environment requires a proxy, add the `HTTP_PROXY` variable to `generate-indexer-certs.yml` and run manually:
 ```bash
 docker compose -f generate-indexer-certs.yml run --rm generator
 ```
