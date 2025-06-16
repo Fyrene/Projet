@@ -13,7 +13,7 @@ You can now orchestrate everything from the repository root. The provided Makefi
 
 ```bash
 make init   # copy every .env.example to .env
-make up     # start all containers
+make up     # start all containers (generates Wazuh SSL certs)
 ```
 
 Use `make down` to stop the stack. The root `docker-compose.yml` extends the individual service files, and you can run `docker compose config` to verify the merged configuration.
