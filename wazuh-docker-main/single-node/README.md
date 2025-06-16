@@ -6,7 +6,9 @@ This deployment is defined in the `docker-compose.yml` file with one Wazuh manag
 ```
 $ sysctl -w vm.max_map_count=262144
 ```
-2) Run the certificate creation script:
+2) Generate the certificates using the provided image. Add the `HTTP_PROXY`
+   variable to `generate-indexer-certs.yml` if your environment requires a
+   proxy and run the following command:
 ```
 $ docker compose -f generate-indexer-certs.yml run --rm generator
 ```
