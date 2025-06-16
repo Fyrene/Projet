@@ -1,19 +1,33 @@
 # Projet
 
-This repository contains Docker compose environments for multiple services. Each service directory includes a `docker-compose.yml` file and a `.env.example` that you should copy to `.env` before deploying with Docker Compose.
+This repository gathers several Docker Compose configurations that together form a small security lab. Each service lives in its own directory with a `docker-compose.yml` file and a `.env.example` to configure the environment.
 
-## Available services
-- Iris
-- Shuffle
-- misp
-- suricata-zeek
-- wazuh-docker-main
+## Prerequisites
 
-You can now orchestrate everything from the repository root. The provided Makefile automates the setup:
+- Docker and the Docker Compose v2 plugin installed
+- Clone this repository and copy each `.env.example` to `.env`:
 
 ```bash
-make init   # copy every .env.example to .env
-make up     # start all containers (generates Wazuh SSL certs)
+make init
 ```
 
-Use `make down` to stop the stack. The root `docker-compose.yml` extends the individual service files, and you can run `docker compose config` to verify the merged configuration.
+## Running the full stack
+
+The provided `Makefile` lets you start or stop every container at once:
+
+```bash
+make up       # start all containers and generate Wazuh certificates
+make down     # stop and remove containers
+```
+
+You can inspect the resulting configuration with `make config`.
+
+## Service overview
+
+- **Iris** – incident response platform ([Iris/README.md](Iris/README.md))
+- **Shuffle** – automation engine ([Shuffle/README.md](Shuffle/README.md))
+- **MISP** – threat intelligence sharing ([misp/README.md](misp/README.md))
+- **suricata-zeek** – network IDS sensors ([suricata-zeek/README.md](suricata-zeek/README.md))
+- **wazuh-docker-main** – SIEM stack ([wazuh-docker-main/README.md](wazuh-docker-main/README.md))
+
+The root `docker-compose.yml` extends the compose files found in each directory so everything can be orchestrated together.

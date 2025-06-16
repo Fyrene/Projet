@@ -1,7 +1,15 @@
 # Suricata and Zeek Sensors
 
-Copy `.env.example` to `.env` before running `docker compose`:
+This compose file starts Suricata and Zeek network sensors along with a Filebeat shipper.
+
+1. Copy the environment file:
 
 ```bash
 cp .env.example .env
+```
+
+2. Start the sensors:
+
+```bash
+docker compose up -d
 ```
