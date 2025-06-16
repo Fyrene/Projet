@@ -1,4 +1,6 @@
 # Wazuh App Copyright (C) 2017, Wazuh Inc. (License GPLv2)
+version: "3.9"
+
 services:
   wazuh.manager:
     env_file: .env
