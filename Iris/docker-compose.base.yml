@@ -48,9 +48,6 @@ services:
       - user_templates:/home/iris/user_templates
       - server_data:/home/iris/server_data
     restart: always
-    depends_on:
-      - "rabbitmq"
-      - "db"
     env_file:
       - .env
     environment:
@@ -84,9 +81,6 @@ services:
       - iris-downloads:/home/iris/downloads
       - user_templates:/home/iris/user_templates
       - server_data:/home/iris/server_data
-    depends_on:
-      - "rabbitmq"
-      - "db"
     env_file:
       - .env
     environment:
