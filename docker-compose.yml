@@ -14,22 +14,28 @@ services:
       file: Iris/docker-compose.yml
       service: app
     depends_on:
-      - iris-rabbitmq
-      - iris-db
+      iris-rabbitmq:
+        condition: service_started
+      iris-db:
+        condition: service_started
   iris-worker:
     extends:
       file: Iris/docker-compose.yml
       service: worker
     depends_on:
-      - iris-rabbitmq
-      - iris-db
-      - iris-app
+      iris-rabbitmq:
+        condition: service_started
+      iris-db:
+        condition: service_started
+      iris-app:
+        condition: service_started
   iris-nginx:
     extends:
       file: Iris/docker-compose.yml
       service: nginx
     depends_on:
-      - iris-app
+      iris-app:
+        condition: service_started
 
   shuffle-frontend:
     extends:
@@ -73,6 +79,10 @@ services:
         condition: service_healthy
       misp-modules:
         condition: service_healthy
+    environment:
+      REDIS_SERVICE: misp-redis
+      DB_SERVICE: misp-db
+      MISP_MODULES_SERVICE: misp-modules
   misp-modules:
     extends:
       file: misp/docker-compose.yml
@@ -103,6 +113,9 @@ services:
     extends:
       file: wazuh-docker-main/docker-compose.yml
       service: wazuh.dashboard
+    depends_on:
+      wazuh-indexer:
+        condition: service_started
 
 volumes:
   iris-downloads:
