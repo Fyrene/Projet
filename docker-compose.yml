@@ -22,20 +22,21 @@ services:
     extends:
       file: Iris/docker-compose.yml
       service: worker
+    command:
+      - ./wait-for-iriswebapp.sh
+      - iris-app:8000
+      - ./iris-entrypoint.sh
+      - iris-worker
     depends_on:
-      iris-rabbitmq:
-        condition: service_started
-      iris-db:
-        condition: service_started
-      iris-app:
-        condition: service_started
+      - iris-rabbitmq
+      - iris-db
+      - iris-app
   iris-nginx:
     extends:
       file: Iris/docker-compose.yml
       service: nginx
     depends_on:
-      iris-app:
-        condition: service_started
+      - iris-app
 
   shuffle-frontend:
     extends:
