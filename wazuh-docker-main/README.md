@@ -2,7 +2,11 @@
 
 This directory bundles the official Wazuh containers into a minimal SIEM stack composed of a manager, an indexer and a dashboard.
 
+The dashboard is exposed on port **8443**. Consult the official documentation
+for more details: <https://documentation.wazuh.com/>
+
 Copy `.env.example` to `.env` in this directory before starting the stack.
+You may tweak this file to change passwords or exposed ports.
 
 It can be deployed by following these steps:
 

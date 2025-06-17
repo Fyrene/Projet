@@ -1,11 +1,10 @@
 SERVICES=Iris Shuffle misp suricata-zeek wazuh-docker-main
 
+
 .PHONY: init up down config generate-indexer-certs
 
-init: generate-indexer-certs
-	@for d in $(SERVICES); do \
-		cp $$d/.env.example $$d/.env; \
-	done
+init:
+	./scripts/init.sh
 
 up:
 	docker compose up -d
