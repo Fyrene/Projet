@@ -4,7 +4,7 @@ version: "3.9"
 services:
   wazuh.manager:
     env_file: .env
-    image: wazuh/wazuh-manager:5.0.0
+    image: wazuh/wazuh-manager:4.12.0
     hostname: wazuh.manager
     restart: always
     ulimits:
@@ -48,7 +48,7 @@ services:
 
   wazuh.indexer:
     env_file: .env
-    image: wazuh/wazuh-indexer:5.0.0
+    image: wazuh/wazuh-indexer:4.12.0
     hostname: wazuh.indexer
     restart: always
     ports:
@@ -74,7 +74,7 @@ services:
 
   wazuh.dashboard:
     env_file: .env
-    image: wazuh/wazuh-dashboard:5.0.0
+    image: wazuh/wazuh-dashboard:4.12.0
     hostname: wazuh.dashboard
     restart: always
     ports:
