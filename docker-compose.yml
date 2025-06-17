@@ -13,19 +13,30 @@ services:
     extends:
       file: Iris/docker-compose.yml
       service: app
+    depends_on:
+      - iris-rabbitmq
+      - iris-db
   iris-worker:
     extends:
       file: Iris/docker-compose.yml
       service: worker
+    depends_on:
+      - iris-rabbitmq
+      - iris-db
+      - iris-app
   iris-nginx:
     extends:
       file: Iris/docker-compose.yml
       service: nginx
+    depends_on:
+      - iris-app
 
   shuffle-frontend:
     extends:
       file: Shuffle/docker-compose.yml
       service: frontend
+    depends_on:
+      - shuffle-backend
   shuffle-backend:
     extends:
       file: Shuffle/docker-compose.yml
@@ -55,6 +66,13 @@ services:
     extends:
       file: misp/docker-compose.yml
       service: misp-core
+    depends_on:
+      misp-redis:
+        condition: service_healthy
+      misp-db:
+        condition: service_healthy
+      misp-modules:
+        condition: service_healthy
   misp-modules:
     extends:
       file: misp/docker-compose.yml
