@@ -119,7 +119,7 @@ services:
     networks:
       - iris_frontend
     ports:
-      - "${INTERFACE_HTTPS_PORT:-443}:${INTERFACE_HTTPS_PORT:-443}"
+      - "${INTERFACE_HTTPS_PORT:-8444}:${INTERFACE_HTTPS_PORT:-8444}"
     volumes:
       - "./certificates/web_certificates/:/www/certs/:ro"
     restart: always

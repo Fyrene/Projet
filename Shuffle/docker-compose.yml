@@ -87,7 +87,7 @@ services:
     volumes:
       - shuffle-database:/usr/share/opensearch/data:z
     ports:
-      - 9200:9200
+      - 9220:9200
     networks:
       - shuffle
     restart: unless-stopped
