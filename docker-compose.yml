@@ -43,8 +43,8 @@ services:
       file: Shuffle/docker-compose.yml
       service: frontend
     depends_on:
-      - shuffle-backend
-  shuffle-backend:
+      - backend
+  backend:
     extends:
       file: Shuffle/docker-compose.yml
       service: backend
