@@ -6,6 +6,7 @@ Shuffle provides workflow automation for security operations.
 
 ```bash
 cp .env.example .env
+mkdir -p ../volumes/shuffle-database
 ```
 
 2. Start the containers:
