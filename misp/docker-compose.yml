@@ -81,11 +81,11 @@ services:
           - PYPI_SETUPTOOLS=${PYPI_SETUPTOOLS}
           - PYPI_SUPERVISOR=${PYPI_SUPERVISOR}
     depends_on:
-      redis:
+      ${REDIS_SERVICE:-redis}:
         condition: service_healthy
-      db:
+      ${DB_SERVICE:-db}:
         condition: service_healthy
-      misp-modules:
+      ${MISP_MODULES_SERVICE:-misp-modules}:
         condition: service_healthy
     healthcheck:
       test: curl -ks ${BASE_URL:-https://localhost}/users/heartbeat > /dev/null || exit 1
