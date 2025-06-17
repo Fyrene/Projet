@@ -31,3 +31,11 @@ You can inspect the resulting configuration with `make config`.
 - **wazuh-docker-main** – SIEM stack ([wazuh-docker-main/README.md](wazuh-docker-main/README.md))
 
 The root `docker-compose.yml` extends the compose files found in each directory so everything can be orchestrated together.
+
+## Data persistence
+
+Persistent volumes are stored under the top-level `volumes` directory. Create it before starting the stack:
+
+```bash
+mkdir -p volumes/shuffle-database
+```
