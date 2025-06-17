@@ -79,10 +79,6 @@ services:
         condition: service_healthy
       misp-modules:
         condition: service_healthy
-    environment:
-      REDIS_SERVICE: misp-redis
-      DB_SERVICE: misp-db
-      MISP_MODULES_SERVICE: misp-modules
   misp-modules:
     extends:
       file: misp/docker-compose.yml
