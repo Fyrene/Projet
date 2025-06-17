@@ -98,20 +98,20 @@ services:
       file: suricata-zeek/docker-compose.yml
       service: filebeat
 
-  wazuh-manager:
+  wazuh.manager:
     extends:
       file: wazuh-docker-main/docker-compose.yml
       service: wazuh.manager
-  wazuh-indexer:
+  wazuh.indexer:
     extends:
       file: wazuh-docker-main/docker-compose.yml
       service: wazuh.indexer
-  wazuh-dashboard:
+  wazuh.dashboard:
     extends:
       file: wazuh-docker-main/docker-compose.yml
       service: wazuh.dashboard
     depends_on:
-      wazuh-indexer:
+      wazuh.indexer:
         condition: service_started
 
 volumes:
