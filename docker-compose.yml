@@ -57,15 +57,15 @@ services:
       file: Shuffle/docker-compose.yml
       service: opensearch
 
-  misp-mail:
+  mail:
     extends:
       file: misp/docker-compose.yml
       service: mail
-  misp-redis:
+  redis:
     extends:
       file: misp/docker-compose.yml
       service: redis
-  misp-db:
+  db:
     extends:
       file: misp/docker-compose.yml
       service: db
@@ -74,9 +74,9 @@ services:
       file: misp/docker-compose.yml
       service: misp-core
     depends_on:
-      misp-redis:
+      redis:
         condition: service_healthy
-      misp-db:
+      db:
         condition: service_healthy
       misp-modules:
         condition: service_healthy
