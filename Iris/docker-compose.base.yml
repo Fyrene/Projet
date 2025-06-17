@@ -87,7 +87,6 @@ services:
     depends_on:
       - "rabbitmq"
       - "db"
-      - "app"
     env_file:
       - .env
     environment:
@@ -123,8 +122,7 @@ services:
     volumes:
       - "./certificates/web_certificates/:/www/certs/:ro"
     restart: always
-    depends_on:
-      - "app"
+    depends_on: []
 
 volumes:
   iris-downloads:
