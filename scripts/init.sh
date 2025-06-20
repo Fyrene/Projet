@@ -1,3 +1,5 @@
+#!/bin/bash
+
 FINAL_ENV=".env"
 TMP_ENV=".env.tmp"
 
