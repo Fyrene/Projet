@@ -1,29 +1,31 @@
 #!/bin/bash
 
+for svc in "${SERVICES[@]}"; do
+  example="$svc/.env.example"
+  target="$svc/.env"
+  if [ -f "$example" ] && [ ! -f "$target" ]; then
+    cp "$example" "$target"
+    echo "Created $target"
+  fi
+done
+
 FINAL_ENV=".env"
-TMP_ENV=".env.fusion.tmp"
+TMP_ENV=".env.tmp"
 BACKUP_ENV=".env.backup.$(date +%s)"
 
-# Sauvegarde de l'ancien .env s'il existe
-if [ -f "$FINAL_ENV" ]; then
-  cp "$FINAL_ENV" "$BACKUP_ENV"
-  echo "Ancien .env sauvegardé dans $BACKUP_ENV"
-fi
+[ -f "$FINAL_ENV" ] && cp "$FINAL_ENV" "$BACKUP_ENV" && echo "Ancien .env sauvegardé dans $BACKUP_ENV"
 
-# Liste des fichiers à concaténer
 files=()
-[ -f "$FINAL_ENV" ] && files+=("$FINAL_ENV")
+[ -s "$FINAL_ENV" ] && files+=("$FINAL_ENV")
 for svc in "${SERVICES[@]}"; do
   [ -f "$svc/.env" ] && files+=("$svc/.env")
 done
 
-# Si aucun fichier trouvé, stop
 if [ ${#files[@]} -eq 0 ]; then
   echo "Erreur : aucun fichier .env trouvé à fusionner."
   exit 1
 fi
 
-# Fusion
 : > "$TMP_ENV"
 for file in "${files[@]}"; do
   {
@@ -33,7 +35,6 @@ for file in "${files[@]}"; do
   } >> "$TMP_ENV"
 done
 
-# Dé-duplication des variables (garde la dernière occurrence)
 awk -F= '
   /^[[:space:]]*#/       {print; next}
   NF>=2 { kv[$1]=$0; next }
