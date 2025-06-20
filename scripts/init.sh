@@ -1,31 +1,28 @@
-#!/bin/bash
+FINAL_ENV=".env"
+TMP_ENV=".env.tmp"
 
-# Initialize environment files and volumes for the security lab
-set -euo pipefail
-
-SERVICES=(Iris Shuffle misp suricata-zeek wazuh-docker-main)
-
-# Copy global environment file
-if [ -f .env.example ] && [ ! -f .env ]; then
-  cp .env.example .env
-  echo "Created .env"
-fi
-
+# Liste des fichiers à agréger
+files=()
+[ -f "$FINAL_ENV" ] && files+=("$FINAL_ENV")
 for svc in "${SERVICES[@]}"; do
-  example="$svc/.env.example"
-  target="$svc/.env"
-  if [ -f "$example" ] && [ ! -f "$target" ]; then
-    cp "$example" "$target"
-    echo "Created $target"
-  fi
+  [ -f "$svc/.env" ] && files+=("$svc/.env")
 done
 
-# Ensure persistent directories exist
-mkdir -p volumes/shuffle-database
+# Concaténation avec entêtes
+: > "$TMP_ENV"
+for file in "${files[@]}"; do
+  {
+    echo "# ===== $file ====="
+    cat "$file"
+    echo
+  } >> "$TMP_ENV"
+done
 
-# Generate Wazuh Indexer certificates if missing
-cert_dir="wazuh-docker-main/config/wazuh_indexer_ssl_certs"
-if [ ! -d "$cert_dir" ] || [ -z "$(ls -A "$cert_dir" 2>/dev/null)" ]; then
-  mkdir -p "$cert_dir"
-  docker compose -f wazuh-docker-main/generate-indexer-certs.yml run --rm generator
-fi
+awk -F= '
+  /^[[:space:]]*#/       {print; next}
+  NF>=2 { kv[$1]=$0; next }
+  { print }
+  END { for (k in kv) print kv[k] }
+' "$TMP_ENV" > "$FINAL_ENV" && rm "$TMP_ENV"
+
+echo "Rebuilt merged .env"
